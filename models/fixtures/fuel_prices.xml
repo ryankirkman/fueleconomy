@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fuelPrices>
+  <cng>2.09</cng>
+  <diesel>2.51</diesel>
+  <e85>3.13</e85>
+  <electric>0.12</electric>
+  <lpg>2.93</lpg>
+  <midgrade>2.73</midgrade>
+  <premium>2.92</premium>
+  <regular>2.51</regular>
+</fuelPrices>

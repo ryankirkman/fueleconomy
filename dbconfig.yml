@@ -1,0 +1,10 @@
+development:
+    dialect: postgres
+    datasource: host=localhost user=migrations password=migrations dbname=fuel_economy sslmode=disable
+    dir: migrations/postgres
+    table: migrations
+
+test:
+    dialect: sqlite3
+    datasource: /tmp/test.db
+    dir: migrations/sqlite3

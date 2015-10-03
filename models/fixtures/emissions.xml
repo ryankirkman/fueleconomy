@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<emissionsInfoes>
+  <emissionsInfo>
+    <efid>CFMXT04.65H9</efid>
+    <id>1</id>
+    <salesArea>3</salesArea>
+    <score>2.0</score>
+    <scoreAlt>-1.0</scoreAlt>
+    <smartwayScore>-1</smartwayScore>
+    <standard>B8</standard>
+    <stdText>Bin 8</stdText>
+  </emissionsInfo>
+  <emissionsInfo>
+    <efid>CFMXT04.65H9</efid>
+    <id>1</id>
+    <salesArea>7</salesArea>
+    <score>2.0</score>
+    <scoreAlt>-1.0</scoreAlt>
+    <smartwayScore>-1</smartwayScore>
+    <standard>B8</standard>
+    <stdText>Bin 8</stdText>
+  </emissionsInfo>
+</emissionsInfoes>

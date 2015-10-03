@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vehicles>
+  <vehicle>
+    <atvType />
+    <barrels08>15.689436</barrels08>
+    <barrelsA08>0.0</barrelsA08>
+    <c240Dscr />
+    <c240bDscr />
+    <charge120>0.0</charge120>
+    <charge240>0.0</charge240>
+    <charge240b>0.0</charge240b>
+    <city08>19</city08>
+    <city08U>0.0</city08U>
+    <cityA08>0</cityA08>
+    <cityA08U>0.0</cityA08U>
+    <cityCD>0.0</cityCD>
+    <cityE>0.0</cityE>
+    <cityUF>0.0</cityUF>
+    <co2>-1</co2>
+    <co2A>-1</co2A>
+    <co2TailpipeAGpm>0.0</co2TailpipeAGpm>
+    <co2TailpipeGpm>423.1904761904762</co2TailpipeGpm>
+    <comb08>21</comb08>
+    <comb08U>0.0</comb08U>
+    <combA08>0</combA08>
+    <combA08U>0.0</combA08U>
+    <combE>0.0</combE>
+    <combinedCD>0.0</combinedCD>
+    <combinedUF>0.0</combinedUF>
+    <createdOn>2013-01-01T00:00:00-05:00</createdOn>
+    <cylinders>4</cylinders>
+    <displ>2.0</displ>
+    <drive>Rear-Wheel Drive</drive>
+    <engId>9011</engId>
+    <eng_dscr>(FFS)</eng_dscr>
+    <evMotor />
+    <feScore>-1</feScore>
+    <fuelCost08>1900</fuelCost08>
+    <fuelCostA08>0</fuelCostA08>
+    <fuelType>Regular</fuelType>
+    <fuelType1>Regular Gasoline</fuelType1>
+    <fuelType2 />
+    <ghgScore>-1</ghgScore>
+    <ghgScoreA>-1</ghgScoreA>
+    <guzzler />
+    <highway08>25</highway08>
+    <highway08U>0.0</highway08U>
+    <highwayA08>0</highwayA08>
+    <highwayA08U>0.0</highwayA08U>
+    <highwayCD>0.0</highwayCD>
+    <highwayE>0.0</highwayE>
+    <highwayUF>0.0</highwayUF>
+    <hlv>0</hlv>
+    <hpv>0</hpv>
+    <id>1</id>
+    <lv2>0</lv2>
+    <lv4>0</lv4>
+    <make>Alfa Romeo</make>
+    <mfrCode />
+    <model>Spider Veloce 2000</model>
+    <modifiedOn>2013-01-01T00:00:00-05:00</modifiedOn>
+    <mpgData>Y</mpgData>
+    <phevBlended>false</phevBlended>
+    <phevCity>0</phevCity>
+    <phevComb>0</phevComb>
+    <phevHwy>0</phevHwy>
+    <pv2>0</pv2>
+    <pv4>0</pv4>
+    <range>0</range>
+    <rangeA />
+    <rangeCity>0.0</rangeCity>
+    <rangeCityA>0.0</rangeCityA>
+    <rangeHwy>0.0</rangeHwy>
+    <rangeHwyA>0.0</rangeHwyA>
+    <startStop />
+    <trans_dscr />
+    <trany>Manual 5-spd</trany>
+    <UCity>23.3333</UCity>
+    <UCityA>0.0</UCityA>
+    <UHighway>35.0</UHighway>
+    <UHighwayA>0.0</UHighwayA>
+    <VClass>Two Seaters</VClass>
+    <year>1985</year>
+    <youSaveSpend>-1250</youSaveSpend>
+    <sCharger />
+    <tCharger />
+  </vehicle>
+</vehicles>
