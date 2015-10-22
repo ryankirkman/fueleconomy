@@ -11,6 +11,45 @@ type QueryBuilder struct {
 	Table string
 }
 
+func (qb QueryBuilder) BuildCount(whereExact map[string]string,
+	whereFuzzy map[string]string) (string, []interface{}) {
+
+	var sqlArgs []interface{}
+	sqlQuery := bytes.Buffer{}
+	sqlQuery.WriteString("SELECT COUNT(*) FROM ")
+	sqlQuery.WriteString(qb.Table)
+	first := true
+	count := 1
+
+	for col, val := range whereExact {
+		if first {
+			sqlQuery.WriteString(" WHERE ")
+		}
+		if !first {
+			sqlQuery.WriteString(" AND ")
+		}
+		sqlQuery.WriteString(fmt.Sprintf("%s = %s", col, qb.Db.Dialect.Placeholder(count)))
+		sqlArgs = append(sqlArgs, val)
+		first = false
+		count++
+	}
+
+	for col, val := range whereFuzzy {
+		if first {
+			sqlQuery.WriteString(" WHERE ")
+		}
+		if !first {
+			sqlQuery.WriteString(" AND ")
+		}
+		sqlQuery.WriteString(fmt.Sprintf("lower(%s) LIKE %s", col, qb.Db.Dialect.Placeholder(count)))
+		sqlArgs = append(sqlArgs, trailingPercent(strings.ToLower(val)))
+		first = false
+		count++
+	}
+
+	return sqlQuery.String(), sqlArgs
+}
+
 func (qb QueryBuilder) BuildSelect(limit int, offset int, whereExact map[string]string,
 	whereFuzzy map[string]string) (string, []interface{}) {
 

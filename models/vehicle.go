@@ -5,21 +5,6 @@ import (
 	"time"
 )
 
-func NewVehicleFromRaw(raw *RawVehicle) (*Vehicle, error) {
-	vehicle := Vehicle{}
-	vehicleVal := reflect.ValueOf(&vehicle)
-	rawVal := reflect.ValueOf(raw).Elem()
-	for i := 0; i < rawVal.NumField(); i++ {
-		rawStructFld := rawVal.Type().Field(i)
-		rawFldValue := rawVal.Field(i)
-		err := parseStringToOutStruct(rawFldValue, rawStructFld, vehicleVal)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return &vehicle, nil
-}
-
 type Vehicle struct {
 	ID                    int             `db:"id, primaryKey" json:"-"`                                      // Our ID
 	Updated               time.Time       `db:"updated, autoSet" json:"updated"`                              // Our updated timestamp
@@ -194,4 +179,19 @@ type RawVehicle struct {
 	Turbocharger          string `xml:"tCharger" parseBool:"HasTurbocharger,T"`     // if T, this vehicle is turbocharged
 	Year                  string `xml:"year"`                                       // model year
 	YouSaveSpend          string `xml:"youSaveSpend"`                               // you save/spend over 5 years compared to an average car ($). Savings are positive; a greater amount spent yields a negative number. For dual fuel vehicles, this is the cost savings for gasoline
+}
+
+func NewVehicleFromRaw(raw *RawVehicle) (*Vehicle, error) {
+	vehicle := Vehicle{}
+	vehicleVal := reflect.ValueOf(&vehicle)
+	rawVal := reflect.ValueOf(raw).Elem()
+	for i := 0; i < rawVal.NumField(); i++ {
+		rawStructFld := rawVal.Type().Field(i)
+		rawFldValue := rawVal.Field(i)
+		err := parseStringToOutStruct(rawFldValue, rawStructFld, vehicleVal)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &vehicle, nil
 }

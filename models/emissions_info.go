@@ -5,21 +5,6 @@ import (
 	"time"
 )
 
-func NewEmissionsInfoFromRaw(r *RawEmissionsInfo) (*EmissionsInfo, error) {
-	e := EmissionsInfo{}
-	ev := reflect.ValueOf(&e)
-	rv := reflect.ValueOf(r).Elem()
-	for i := 0; i < rv.NumField(); i++ {
-		rStructFld := rv.Type().Field(i)
-		rFldValue := rv.Field(i)
-		err := parseStringToOutStruct(rFldValue, rStructFld, ev)
-		if err != nil {
-			return nil, err
-		}
-	}
-	return &e, nil
-}
-
 type EmissionsInfo struct {
 	ID              int       `db:"id, primaryKey" json:"-"`                            // Our ID
 	Updated         time.Time `db:"updated, autoSet" json:"updated,omitempty"`          // Our update timestamp
@@ -46,4 +31,19 @@ type RawEmissionsInfo struct {
 	F2SmogRating    string `xml:"scoreAlt"`      // EPA 1/10 smog rating for fuelType2
 	SalesArea       string `xml:"salesArea"`     // EPA sales area code
 	SmartwayScore   string `xml:"smartwayScore"` // SmartWay Code
+}
+
+func NewEmissionsInfoFromRaw(r *RawEmissionsInfo) (*EmissionsInfo, error) {
+	e := EmissionsInfo{}
+	ev := reflect.ValueOf(&e)
+	rv := reflect.ValueOf(r).Elem()
+	for i := 0; i < rv.NumField(); i++ {
+		rStructFld := rv.Type().Field(i)
+		rFldValue := rv.Field(i)
+		err := parseStringToOutStruct(rFldValue, rStructFld, ev)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return &e, nil
 }

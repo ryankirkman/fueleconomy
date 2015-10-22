@@ -31,6 +31,15 @@ func (db *DbMap) InsertOne(table string, ptr interface{}) (insertedId int, err e
 	return insertedId, err
 }
 
+func (db *DbMap) SelectInt(query string, args ...interface{}) (int, error) {
+	var h int64
+	err := selectval(db, &h, query, args...)
+	if err != nil && err != sql.ErrNoRows {
+		return 0, err
+	}
+	return int(h), nil
+}
+
 func (db *DbMap) SelectOne(ptr interface{}, query string, args ...interface{}) (err error) {
 	err = selectone(db, ptr, query, args...)
 	return err
