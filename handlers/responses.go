@@ -12,11 +12,14 @@ type SimpleResponse struct {
 }
 
 type VehicleResponse struct {
-	Vehicle models.Vehicle `json:"vehicle"`
+	Profile models.DrivingProfile `json:"profile"`
+	Vehicle models.Vehicle        `json:"vehicle"`
 }
 
 type VehiclesResponse struct {
-	Vehicles []models.Vehicle `json:"vehicles"`
+	Meta     PageInfo              `json:"meta"`
+	Profile  models.DrivingProfile `json:"profile"`
+	Vehicles []models.Vehicle      `json:"vehicles"`
 }
 
 func sendErrorJSON(w http.ResponseWriter, message string, code int) {

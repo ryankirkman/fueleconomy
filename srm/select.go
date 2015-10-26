@@ -1,6 +1,7 @@
 package srm
 
 import (
+	"database/sql"
 	"reflect"
 )
 
@@ -98,4 +99,19 @@ func selectmany(db *DbMap, ptr interface{}, query string, args ...interface{}) e
 	}
 
 	return nil
+}
+
+func selectval(db *DbMap, holder interface{}, query string, args ...interface{}) error {
+	rows, err := db.Conn.Query(query, args...)
+
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		return sql.ErrNoRows
+	}
+
+	return rows.Scan(holder)
 }
