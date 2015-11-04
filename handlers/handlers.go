@@ -76,19 +76,21 @@ func VehicleGetOne(w http.ResponseWriter, r *http.Request) {
 var (
 	// Querties correspond to exact matches
 	// SQL: WHERE col = query
-	MatchExact []string = []string{"year"}
+	ExactParams []searchParam = []searchParam{
+		searchParam{name: "year", converter: intConverter},
+	}
 	// Queries are subject to case insensitive matching with wildcard tails
 	// SQL: WHERE lower(col) LIKE 'lower(query)%'
-	MatchFuzzy []string = []string{"make", "model"}
+	FuzzyParams []string = []string{"make", "model"}
 )
 
 func VehicleGetMany(w http.ResponseWriter, r *http.Request) {
 	// Parse querystring parameters and make sql query builder
 	queryVals := r.URL.Query()
-	page := getPageFromQueryVals(queryVals, r.URL)
+	exactSearchMap := extractSearchParams(queryVals, ExactParams)
+	fuzzySearchMap := extractStringParams(queryVals, FuzzyParams)
 	profile := getProfileFromQueryVals(queryVals)
-	exactSearchMap := mapFromQueryVals(queryVals, MatchExact)
-	fuzzySearchMap := mapFromQueryVals(queryVals, MatchFuzzy)
+	page := getPageFromQueryVals(queryVals, r.URL)
 	queryBuilder := srm.QueryBuilder{
 		Db:    global.Db,
 		Table: "vehicles",
@@ -128,7 +130,6 @@ func VehicleGetMany(w http.ResponseWriter, r *http.Request) {
 
 func calculateFuelDataForAndCollectEpaIdsFromVehicles(vehicles *[]models.Vehicle, profile models.DrivingProfile,
 	fp models.FuelPrices) (epaIdsQuery string, epaIds []interface{}, epaIdToIdx map[int]int) {
-
 	queryBuff := bytes.Buffer{}
 	epaIdToIdx = make(map[int]int, 0)
 	vs := *vehicles
