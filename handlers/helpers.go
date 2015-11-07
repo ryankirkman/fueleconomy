@@ -10,6 +10,8 @@ import (
 	"github.com/teasherm/fueleconomy/models"
 )
 
+// Error check helper
+
 func checkErr(err error, w http.ResponseWriter) {
 	if err != nil {
 		global.Logger.Println("Error: ", err)
@@ -17,6 +19,43 @@ func checkErr(err error, w http.ResponseWriter) {
 		return
 	}
 }
+
+// Search param data struct and parser
+
+type searchParam struct {
+	name      string
+	converter func(string) (interface{}, error)
+}
+
+func intConverter(in string) (interface{}, error) {
+	return strconv.Atoi(in)
+}
+
+func extractSearchParams(queryVals url.Values, params []searchParam) map[string]interface{} {
+	out := make(map[string]interface{})
+	for _, param := range params {
+		val := queryVals.Get(param.name)
+		if val != "" {
+			if conv, err := param.converter(val); err != nil {
+				out[param.name] = conv
+			}
+		}
+	}
+	return out
+}
+
+func extractStringParams(queryVals url.Values, params []string) map[string]string {
+	out := make(map[string]string)
+	for _, param := range params {
+		val := queryVals.Get(param)
+		if val != "" {
+			out[param] = val
+		}
+	}
+	return out
+}
+
+// Driving profile parser
 
 func getIntFromQueryVals(queryVals url.Values, param string) int {
 	value := queryVals.Get(param)
@@ -52,22 +91,15 @@ func getProfileFromQueryVals(queryVals url.Values) models.DrivingProfile {
 	return profile
 }
 
+// Fuel prices retriever
+
 func getMostRecentFuelPrices() (fp models.FuelPrices) {
 	query := "SELECT * FROM fuel_prices WHERE updated = (SELECT MAX(updated) from fuel_prices)"
 	global.Db.SelectOne(&fp, query)
 	return fp
 }
 
-func mapFromQueryVals(queryString url.Values, params []string) (res map[string]string) {
-	res = make(map[string]string)
-	for _, q := range params {
-		val := queryString.Get(q)
-		if val != "" {
-			res[q] = val
-		}
-	}
-	return res
-}
+// Get maximum of two integers
 
 func maxInt(first int, second int) int {
 	return int(math.Max(float64(first), float64(second)))

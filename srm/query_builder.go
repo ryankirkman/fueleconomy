@@ -11,7 +11,7 @@ type QueryBuilder struct {
 	Table string
 }
 
-func (qb QueryBuilder) BuildCount(whereExact map[string]string,
+func (qb QueryBuilder) BuildCount(whereExact map[string]interface{},
 	whereFuzzy map[string]string) (string, []interface{}) {
 
 	var sqlArgs []interface{}
@@ -50,7 +50,7 @@ func (qb QueryBuilder) BuildCount(whereExact map[string]string,
 	return sqlQuery.String(), sqlArgs
 }
 
-func (qb QueryBuilder) BuildSelect(limit int, offset int, whereExact map[string]string,
+func (qb QueryBuilder) BuildSelect(limit int, offset int, whereExact map[string]interface{},
 	whereFuzzy map[string]string) (string, []interface{}) {
 
 	var sqlArgs []interface{}
