@@ -56,14 +56,16 @@ func VehicleGetOne(w http.ResponseWriter, r *http.Request) {
 
 	v := models.Vehicle{}
 	eis := make([]models.EmissionsInfo, 0)
-	query := fmt.Sprintf("SELECT * FROM vehicles WHERE epa_id = %s", global.Db.Dialect.Placeholder(1))
+	query := fmt.Sprintf("SELECT * FROM vehicles WHERE epa_id = %s",
+		global.Db.Dialect.Placeholder(1))
 	err := global.Db.SelectOne(&v, query, id)
 	checkErr(err, w)
 
 	fp := getMostRecentFuelPrices()
 	v.Fuels = models.CalculateFuelData(&v, profile, fp)
 
-	query = fmt.Sprintf("SELECT * FROM emissions_info WHERE epa_id = %s", global.Db.Dialect.Placeholder(1))
+	query = fmt.Sprintf("SELECT * FROM emissions_info WHERE epa_id = %s",
+		global.Db.Dialect.Placeholder(1))
 	err = global.Db.SelectMany(&eis, query, id)
 	checkErr(err, w)
 	v.EmissionsInfo = eis
@@ -87,31 +89,33 @@ var (
 func VehicleGetMany(w http.ResponseWriter, r *http.Request) {
 	// Parse querystring parameters and make sql query builder
 	queryVals := r.URL.Query()
-	exactSearchMap := extractSearchParams(queryVals, ExactParams)
-	fuzzySearchMap := extractStringParams(queryVals, FuzzyParams)
 	profile := getProfileFromQueryVals(queryVals)
 	page := getPageFromQueryVals(queryVals, r.URL)
-	queryBuilder := srm.QueryBuilder{
-		Db:    global.Db,
-		Table: "vehicles",
+	queryBuilder := &srm.QueryBuilder{
+		Db:         global.Db,
+		Table:      "vehicles",
+		Limit:      page.PageLength,
+		Offset:     page.PageLength * (page.PageNo - 1),
+		WhereExact: extractSearchParams(queryVals, ExactParams),
+		WhereFuzzy: extractStringParams(queryVals, FuzzyParams),
 	}
 
 	// Get results count
-	query, vals := queryBuilder.BuildCount(exactSearchMap, fuzzySearchMap)
+	query, vals := queryBuilder.BuildCount()
 	resultCount, err := global.Db.SelectInt(query, vals...)
 	checkErr(err, w)
 	page.Fill(queryVals, resultCount)
 
 	// Query for page of vehicles
-	query, vals = queryBuilder.BuildSelect(page.PageLength, page.PageLength*(page.PageNo-1),
-		exactSearchMap, fuzzySearchMap)
+	query, vals = queryBuilder.BuildSelect()
 	vs := make([]models.Vehicle, 0)
 	err = global.Db.SelectMany(&vs, query, vals...)
 	checkErr(err, w)
 
 	// Calculate fuel data on vehicles
 	fp := getMostRecentFuelPrices()
-	epaIdsQuery, epaIds, epaIdToIdx := calculateFuelDataForAndCollectEpaIdsFromVehicles(&vs, profile, fp)
+	epaIdsQuery, epaIds, epaIdToIdx := calculateFuelDataForAndCollectEpaIdsFromVehicles(
+		&vs, profile, fp)
 
 	// Query for emissions info and append to vehicles
 	eis := make([]models.EmissionsInfo, 0)
@@ -128,8 +132,10 @@ func VehicleGetMany(w http.ResponseWriter, r *http.Request) {
 	sendJSON(w, js)
 }
 
-func calculateFuelDataForAndCollectEpaIdsFromVehicles(vehicles *[]models.Vehicle, profile models.DrivingProfile,
-	fp models.FuelPrices) (epaIdsQuery string, epaIds []interface{}, epaIdToIdx map[int]int) {
+func calculateFuelDataForAndCollectEpaIdsFromVehicles(vehicles *[]models.Vehicle,
+	profile models.DrivingProfile, fp models.FuelPrices) (epaIdsQuery string, epaIds []interface{},
+	epaIdToIdx map[int]int) {
+
 	queryBuff := bytes.Buffer{}
 	epaIdToIdx = make(map[int]int, 0)
 	vs := *vehicles
