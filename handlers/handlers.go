@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -18,6 +19,7 @@ import (
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", Index).Methods("GET")
 	r.HandleFunc("/health_check", HealthCheck).Methods("GET")
 	r.HandleFunc("/ingest/{target}", Ingest).Methods("GET")
 	r.HandleFunc("/vehicle/{id:[0-9]+}", VehicleGetOne).Methods("GET")
@@ -33,6 +35,12 @@ func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	js, err := json.Marshal(SimpleResponse{"Healthy!"})
 	checkErr(err, w)
 	sendJSON(w, js)
+}
+
+func Index(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadFile("/opt/go/src/github.com/teasherm/fueleconomy/frontend/index.html")
+	checkErr(err, w)
+	fmt.Fprintf(w, string(body))
 }
 
 func Ingest(w http.ResponseWriter, r *http.Request) {

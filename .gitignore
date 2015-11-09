@@ -1,2 +1,4 @@
 .DS_STORE
 fueleconomy
+frontend/*.min.*
+frontend/node_modules
