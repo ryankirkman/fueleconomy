@@ -189,5 +189,5 @@ Minimal dependencies:
 - [rubenv/sql-migrate](https://github.com/rubenv/sql-migrate) (migrations tool)
 
 Custom tooling:
-- go struct -> SQL persistence library [(github.com/teasherm/fueleconomy/srm)](https://github.com/teasherm/fueleconomy/srm)
-- worker pool and task queue [(github.com/teasherm/fueleconomy/workers)](https://github.com/teasherm/fueleconomy/workers)
+- go struct -> SQL persistence library [(github.com/teasherm/fueleconomy/srm)](https://github.com/teasherm/fueleconomy/tree/master/srm)
+- worker pool and task queue [(github.com/teasherm/fueleconomy/workers)](https://github.com/teasherm/fueleconomy/tree/master/workers)
